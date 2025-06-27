@@ -1,0 +1,48 @@
+[project]
+name = "mAIgic-assistant"
+version = "0.1.0"
+description = "mAIgic Assistant - AI conversation system"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "ruff",
+    "mypy"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Tell hatchling to include the components from src/
+[tool.hatch.build.targets.wheel]
+packages = ["src/speech_api"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["src", "tests"]  # Test both components and integration
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = [
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=90"
+]
+asyncio_mode = "auto"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]  # Line too long
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+strict = true
+ignore_missing_imports = true

@@ -1,0 +1,138 @@
+version: 2.1
+
+# Use orbs for common functionality
+orbs:
+  python: circleci/python@2.1
+
+# Define jobs
+jobs:
+  test:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      
+      # Install uv
+      - run:
+          name: Install uv
+          command: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $BASH_ENV
+            source $BASH_ENV
+      
+      # Cache uv dependencies
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "uv.lock" }}
+            - v1-deps-
+      
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: |
+            source $BASH_ENV
+            uv sync --extra dev
+      
+      # Save cache
+      - save_cache:
+          paths:
+            - .venv
+            - ~/.cache/uv
+          key: v1-deps-{{ checksum "uv.lock" }}
+      
+      # Run tests with coverage
+      - run:
+          name: Run tests
+          command: |
+            source $BASH_ENV
+            uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=90
+      
+      # Store test results and coverage
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: htmlcov
+          destination: coverage
+
+  lint:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      
+      # Install uv
+      - run:
+          name: Install uv
+          command: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $BASH_ENV
+            source $BASH_ENV
+      
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: |
+            source $BASH_ENV
+            uv sync --extra dev
+      
+      # Run ruff linting
+      - run:
+          name: Run ruff
+          command: |
+            source $BASH_ENV
+            uv run ruff check src/
+      
+      # Run mypy type checking
+      - run:
+          name: Run mypy
+          command: |
+            source $BASH_ENV
+            uv run mypy src/
+
+  build:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      
+      # Install uv
+      - run:
+          name: Install uv
+          command: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $BASH_ENV
+            source $BASH_ENV
+      
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: |
+            source $BASH_ENV
+            uv sync --extra dev
+      
+      # Build the package
+      - run:
+          name: Build package
+          command: |
+            source $BASH_ENV
+            uv run python -m build
+      
+      # Store build artifacts
+      - store_artifacts:
+          path: dist/
+          destination: build-artifacts
+
+workflows:
+  version: 2
+  test-and-build:
+    jobs:
+      - lint
+      - test:
+          requires:
+            - lint
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
