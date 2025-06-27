@@ -223,12 +223,6 @@ async for audio_chunk in client.synthesize_stream(text):
     play_audio(audio_chunk)
 ```
 
-This approach:
-- ✅ **Matches OpenAI API patterns** exactly
-- ✅ **Provides clean type safety** with mypy
-- ✅ **Enables intuitive usage** with `async for`
-- ✅ **Follows Python async generator standards**
-
 ## Error Handling
 
 The library provides a comprehensive exception hierarchy:

@@ -12,7 +12,8 @@ dev = [
     "pytest-cov",
     "pytest-asyncio",
     "ruff",
-    "mypy"
+    "mypy",
+    "build"
 ]
 
 [build-system]
