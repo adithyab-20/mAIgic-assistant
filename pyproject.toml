@@ -9,6 +9,10 @@ dependencies = [
     "python-dotenv>=1.1.1",
 ]
 
+# System dependencies for PyAudio
+[project.system-dependencies]
+pyaudio = ["portaudio19-dev"]
+
 [project.optional-dependencies]
 dev = [
     "pytest",
