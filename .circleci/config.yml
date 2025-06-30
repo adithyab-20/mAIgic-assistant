@@ -67,6 +67,13 @@ jobs:
     steps:
       - checkout
       
+      # Install system dependencies for PyAudio
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y portaudio19-dev
+      
       # Install uv
       - run:
           name: Install uv
@@ -101,6 +108,13 @@ jobs:
       - image: cimg/python:3.12
     steps:
       - checkout
+      
+      # Install system dependencies for PyAudio
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y portaudio19-dev
       
       # Install uv
       - run:
