@@ -38,7 +38,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev,openai
+            uv sync --extra dev --extra openai
       
       # Save cache
       - save_cache:
@@ -80,7 +80,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev,openai
+            uv sync --extra dev --extra openai
       
       # Run ruff linting
       - run:
@@ -115,7 +115,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev,openai
+            uv sync --extra dev --extra openai
       
       # Build the package
       - run:
