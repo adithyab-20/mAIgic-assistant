@@ -123,7 +123,7 @@ class OpenAISpeechToTextClient(SpeechToTextClient):
                     raise APIError(f"HTTP {response.status}: {error_text}")
 
                 response.raise_for_status()
-                result = await response.text()
+                result: str = await response.text()
                 return result
 
         except aiohttp.ClientError as e:
@@ -424,7 +424,7 @@ class OpenAITextToSpeechClient(TextToSpeechClient):
                     raise APIError(f"HTTP {response.status}: {error_text}")
 
                 response.raise_for_status()
-                result = await response.read()
+                result: bytes = await response.read()
                 return result
 
         except aiohttp.ClientError as e:
