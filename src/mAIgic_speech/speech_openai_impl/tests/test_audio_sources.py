@@ -5,8 +5,11 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from speech_api.exceptions import AudioSourceError
-from speech_openai_impl.audio_sources import FileAudioSource, PyAudioMicrophoneSource
+from mAIgic_speech.speech_api.exceptions import AudioSourceError
+from mAIgic_speech.speech_openai_impl.audio_sources import (
+    FileAudioSource,
+    PyAudioMicrophoneSource,
+)
 
 
 class TestFileAudioSource:
@@ -206,7 +209,7 @@ class TestPyAudioMicrophoneSource:
         assert source._chunk_size == 2048
         assert source._device_index == 1
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     async def test_start_success(self, mock_pyaudio_module: MagicMock) -> None:
         """Test successfully starting microphone audio source."""
         # Mock PyAudio objects
@@ -228,7 +231,7 @@ class TestPyAudioMicrophoneSource:
 
         await source.stop()
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     async def test_start_pyaudio_error_cleans_up(self, mock_pyaudio_module: MagicMock) -> None:
         """Test that PyAudio error during start cleans up properly."""
         mock_pyaudio = MagicMock()
@@ -245,7 +248,7 @@ class TestPyAudioMicrophoneSource:
         assert source._audio is None
         assert source._stream is None
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     async def test_start_already_active_is_idempotent(self, mock_pyaudio_module: MagicMock) -> None:
         """Test that calling start when already active is idempotent."""
         mock_pyaudio = MagicMock()
@@ -264,7 +267,7 @@ class TestPyAudioMicrophoneSource:
 
         await source.stop()
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     async def test_stop_success(self, mock_pyaudio_module: MagicMock) -> None:
         """Test successfully stopping microphone audio source."""
         mock_pyaudio = MagicMock()
@@ -290,7 +293,7 @@ class TestPyAudioMicrophoneSource:
         await source.stop()  # Should not raise error
         assert source._is_active is False
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     async def test_read_chunk_success(self, mock_pyaudio_module: MagicMock) -> None:
         """Test successfully reading audio chunk."""
         mock_pyaudio = MagicMock()
@@ -324,7 +327,7 @@ class TestPyAudioMicrophoneSource:
         result = await source.read_chunk()
         assert result is None
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     def test_audio_callback(self, mock_pyaudio_module: MagicMock) -> None:
         """Test audio callback adds data to queue."""
         source = PyAudioMicrophoneSource()
@@ -342,7 +345,7 @@ class TestPyAudioMicrophoneSource:
         # Should return continuation signal
         assert result == (None, mock_pyaudio_module.paContinue)
 
-    @patch('speech_openai_impl.audio_sources.pyaudio')
+    @patch('mAIgic_speech.speech_openai_impl.audio_sources.pyaudio')
     def test_audio_callback_with_error_status(self, mock_pyaudio_module: MagicMock) -> None:
         """Test audio callback with error status doesn't add data."""
         source = PyAudioMicrophoneSource()

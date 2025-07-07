@@ -6,13 +6,17 @@ from unittest.mock import AsyncMock, patch
 import aiohttp
 import pytest
 
-from speech_api.exceptions import APIError, SynthesisError, TranscriptionError
-from speech_api.types import AudioChunk, AudioFormat
-from speech_openai_impl.clients import (
+from mAIgic_speech.speech_api.exceptions import (
+    APIError,
+    SynthesisError,
+    TranscriptionError,
+)
+from mAIgic_speech.speech_api.types import AudioChunk, AudioFormat
+from mAIgic_speech.speech_openai_impl.clients import (
     OpenAISpeechToTextClient,
     OpenAITextToSpeechClient,
 )
-from speech_openai_impl.config import OpenAIConfig
+from mAIgic_speech.speech_openai_impl.config import OpenAIConfig
 
 
 class MockResponse:

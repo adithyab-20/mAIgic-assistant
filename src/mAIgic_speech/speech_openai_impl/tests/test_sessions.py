@@ -7,12 +7,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from speech_api import (
+from mAIgic_speech.speech_api import (
     SessionClosedError,
     SessionConnectionError,
 )
-from speech_openai_impl.config import OpenAIConfig
-from speech_openai_impl.sessions import (
+from mAIgic_speech.speech_openai_impl.config import OpenAIConfig
+from mAIgic_speech.speech_openai_impl.sessions import (
     OpenAIRealtimeClient,
     OpenAIRealtimeTranscriptionSession,
     RealtimeSpeechToSpeechSession,
@@ -294,7 +294,7 @@ class TestOpenAIRealtimeTranscriptionSession:
         session._closed = True
         assert session.is_closed is True
 
-    @patch('speech_openai_impl.sessions.logger')
+    @patch('mAIgic_speech.speech_openai_impl.sessions.logger')
     async def test_configure_transcription(self, mock_logger: Any, mock_websocket: AsyncMock, config: OpenAIConfig) -> None:
         """Test configuring transcription model."""
         session = OpenAIRealtimeTranscriptionSession(mock_websocket, config)

@@ -9,15 +9,23 @@ from typing import AsyncGenerator, List, Optional
 import aiohttp
 from aiohttp import ClientSession
 
-from speech_api.exceptions import (
+from mAIgic_speech.speech_api.exceptions import (
     APIError,
     RealtimeSessionError,
     SessionConnectionError,
     SynthesisError,
     TranscriptionError,
 )
-from speech_api.interfaces import AudioSource, SpeechToTextClient, TextToSpeechClient
-from speech_api.types import AudioChunk, RealtimeSessionConfig, TranscriptionEvent
+from mAIgic_speech.speech_api.interfaces import (
+    AudioSource,
+    SpeechToTextClient,
+    TextToSpeechClient,
+)
+from mAIgic_speech.speech_api.types import (
+    AudioChunk,
+    RealtimeSessionConfig,
+    TranscriptionEvent,
+)
 
 from .config import OpenAIConfig
 from .sessions import OpenAIRealtimeClient

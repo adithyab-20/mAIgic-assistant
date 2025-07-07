@@ -4,8 +4,16 @@ from typing import AsyncGenerator, List, Optional
 
 import pytest
 
-from speech_api.interfaces import AudioSource, SpeechToTextClient, TextToSpeechClient
-from speech_api.types import AudioChunk, RealtimeSessionConfig, TranscriptionEvent
+from mAIgic_speech.speech_api.interfaces import (
+    AudioSource,
+    SpeechToTextClient,
+    TextToSpeechClient,
+)
+from mAIgic_speech.speech_api.types import (
+    AudioChunk,
+    RealtimeSessionConfig,
+    TranscriptionEvent,
+)
 
 
 class DummyAudioSource(AudioSource):

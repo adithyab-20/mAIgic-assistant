@@ -2,7 +2,7 @@
 
 import pytest
 
-from speech_openai_impl.config import OpenAIConfig
+from mAIgic_speech.speech_openai_impl.config import OpenAIConfig
 
 
 class TestOpenAIConfig:

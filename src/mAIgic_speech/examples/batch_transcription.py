@@ -32,15 +32,11 @@ import os
 import sys
 import tempfile
 import time
-from pathlib import Path
-
-# Add src to path for importing our modules
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from dotenv import load_dotenv
 
-from speech_api import AudioChunk, AudioFormat
-from speech_openai_impl import OpenAIConfig, OpenAISpeechToTextClient
+from mAIgic_speech.speech_api import AudioChunk, AudioFormat
+from mAIgic_speech.speech_openai_impl import OpenAIConfig, OpenAISpeechToTextClient
 
 # Audio recording imports
 try:

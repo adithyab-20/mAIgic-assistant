@@ -38,7 +38,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra openai
+            uv sync --extra dev --extra speech
       
       # Save cache
       - save_cache:
@@ -87,21 +87,21 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra openai
+            uv sync --extra dev --extra speech
       
-      # Run ruff linting
+      # Run ruff linting on all components
       - run:
           name: Run ruff
           command: |
             source $BASH_ENV
-            uv run ruff check src/
+            uv run ruff check src/mAIgic_speech/ src/mAIgic_core/ src/mAIgic_integrations/
       
-      # Run mypy type checking
+      # Run mypy type checking on all components
       - run:
           name: Run mypy
           command: |
             source $BASH_ENV
-            uv run mypy src/
+            uv run mypy src/mAIgic_speech/ src/mAIgic_core/ src/mAIgic_integrations/
 
   build:
     docker:
@@ -129,7 +129,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra openai
+            uv sync --extra dev --extra speech
       
       # Build the package
       - run:

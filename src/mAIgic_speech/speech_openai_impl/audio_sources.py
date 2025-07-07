@@ -1,7 +1,7 @@
-"""Audio source implementations for real-time speech processing.
+"""
+Audio source implementations for speech input.
 
-This module provides audio source implementations for capturing and streaming
-audio data from various sources like microphones and files.
+Provides concrete implementations of AudioSource interface for different input methods.
 """
 
 import queue
@@ -10,7 +10,7 @@ from typing import Any, Optional
 
 import pyaudio
 
-from speech_api import AudioSource, AudioSourceError, StreamingAudioSource
+from mAIgic_speech.speech_api import AudioSource, AudioSourceError, StreamingAudioSource
 
 
 class PyAudioMicrophoneSource(StreamingAudioSource):
