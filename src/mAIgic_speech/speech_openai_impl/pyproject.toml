@@ -1,14 +1,17 @@
 [project]
-name = "speech-openai-impl"
+name = "maigic-speech-openai-impl"
 version = "0.1.0"
-description = "OpenAI implementation for the Speech API"
+description = "mAIgic OpenAI implementation for the Speech API"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.8.0",
     "websockets>=11.0.0",
-    "speech-api>=0.1.0"
+    "maigic-speech-api>=0.1.0"
 ]
+
+[tool.uv.sources]
+maigic-speech-api = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

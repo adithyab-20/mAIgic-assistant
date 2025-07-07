@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from speech_api.types import AudioChunk, AudioFormat
-from speech_openai_impl.config import OpenAIConfig
+from mAIgic_speech.speech_api.types import AudioChunk, AudioFormat
+from mAIgic_speech.speech_openai_impl.config import OpenAIConfig
 
 
 @pytest.fixture

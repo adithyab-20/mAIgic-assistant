@@ -1,12 +1,12 @@
 [project]
 name = "mAIgic-assistant"
 version = "0.1.0"
-description = "mAIgic Assistant - AI conversation system"
+description = "mAIgic Assistant - AI conversation system with voice, email, and calendar integration"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pyaudio>=0.2.14",
-    "python-dotenv>=1.1.1",
+    # Only truly shared dependencies
+    "python-dotenv>=1.1.1",  # Configuration management across all components
 ]
 
 # System dependencies for PyAudio
@@ -14,6 +14,14 @@ dependencies = [
 pyaudio = ["portaudio19-dev"]
 
 [project.optional-dependencies]
+# Speech processing capabilities
+speech = [
+    "pyaudio>=0.2.14",       # Audio input/output
+    "aiohttp>=3.8.0",        # HTTP client for OpenAI API
+    "websockets>=11.0.0",    # WebSocket client for real-time transcription
+]
+
+# Development and testing dependencies
 dev = [
     "pytest",
     "pytest-cov",
@@ -22,28 +30,40 @@ dev = [
     "mypy",
     "build"
 ]
+
+# OpenAI-specific dependencies (alias for speech for backward compatibility)
 openai = [
-    "aiohttp>=3.8.0",
-    "websockets>=11.0.0",
-    "python-dotenv>=1.0.0"
+    "mAIgic-assistant[speech]",
+]
+
+# Install everything for development
+all = [
+    "mAIgic-assistant[speech]",
+    # Future: email, calendar, integrations will be added here
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-# Tell hatchling to include the components from src/
+# Tell hatchling to include the new component structure
 [tool.hatch.build.targets.wheel]
-packages = ["src/speech_api", "src/speech_openai_impl"]
+packages = [
+    "src/mAIgic_speech", 
+    "src/mAIgic_core", 
+    "src/mAIgic_integrations"
+]
 
 
 [tool.pytest.ini_options]
-testpaths = ["src", "tests"]  # Test both components and integration
+testpaths = ["src/mAIgic_speech", "src/mAIgic_core", "src/mAIgic_integrations", "tests"]  # Test all components
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
 addopts = [
-    "--cov=src",
+    "--cov=src/mAIgic_speech",
+    "--cov=src/mAIgic_core", 
+    "--cov=src/mAIgic_integrations",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-fail-under=80"
@@ -52,10 +72,14 @@ asyncio_mode = "auto"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
-ignore = ["E501"]  # Line too long
+ignore = ["E501", "N999"]  # Line too long, Invalid module name (allow mAIgic branding)
 
 [tool.mypy]
 python_version = "3.12"
 warn_return_any = true
 strict = true
 ignore_missing_imports = true
+exclude = [
+    "examples/",  # Exclude examples from strict type checking
+    "tests/",     # Exclude test files from strict type checking
+]

@@ -29,16 +29,12 @@ import asyncio
 import logging
 import os
 import sys
-from pathlib import Path
-
-# Add src to path for importing our modules
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from dotenv import load_dotenv
 
-from speech_api import RealtimeSessionConfig
-from speech_openai_impl import OpenAIConfig, OpenAISpeechToTextClient
-from speech_openai_impl.audio_sources import PyAudioMicrophoneSource
+from mAIgic_speech.speech_api import RealtimeSessionConfig
+from mAIgic_speech.speech_openai_impl import OpenAIConfig, OpenAISpeechToTextClient
+from mAIgic_speech.speech_openai_impl.audio_sources import PyAudioMicrophoneSource
 
 # Configure logging to show only important messages
 logging.basicConfig(level=logging.INFO)

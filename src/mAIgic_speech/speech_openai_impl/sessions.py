@@ -25,7 +25,7 @@ from typing import Any, AsyncGenerator, Dict, Optional
 
 import websockets
 
-from speech_api import (
+from mAIgic_speech.speech_api import (
     RealtimeSessionError,
     RealtimeTranscriptionError,
     RealtimeTranscriptionSession,
