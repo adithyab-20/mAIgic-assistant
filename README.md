@@ -499,9 +499,8 @@ The library provides a comprehensive exception hierarchy:
 - `AudioError` - Errors related to audio format or content
 - `APIError` - Errors from underlying API providers
 
-## Development
 
-### Running Tests
+## Running Tests
 
 ```bash
 # Run tests with coverage
