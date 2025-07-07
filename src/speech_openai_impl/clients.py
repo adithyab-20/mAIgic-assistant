@@ -70,14 +70,7 @@ class OpenAISpeechToTextClient(SpeechToTextClient):
 
     async def get_supported_languages(self) -> List[str]:
         """Get list of supported languages."""
-        return [
-            "en", "es", "fr", "de", "it", "pt", "nl", "pl", "ru", "ja", "ko", "zh",
-            "ar", "hi", "th", "vi", "tr", "sv", "da", "no", "fi", "cs", "hu", "ro",
-            "bg", "hr", "sk", "sl", "et", "lv", "lt", "mt", "el", "he", "fa", "ur",
-            "bn", "ta", "te", "ml", "kn", "gu", "pa", "mr", "ne", "si", "my", "km",
-            "lo", "ka", "am", "ti", "ig", "yo", "ha", "sw", "zu", "af", "xh", "st",
-            "sn", "ny", "rw", "so", "om", "aa", "ss", "ve", "ts", "tn", "tw", "ak"
-        ]
+        return ["en"]  # English-only implementation
 
     async def transcribe(
         self,

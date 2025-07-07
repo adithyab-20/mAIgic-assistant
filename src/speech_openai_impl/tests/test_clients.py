@@ -215,10 +215,9 @@ class TestOpenAISpeechToTextClient:
         languages = await client.get_supported_languages()
 
         assert isinstance(languages, list)
-        assert len(languages) > 0
+        assert len(languages) == 1
         assert "en" in languages
-        assert "es" in languages
-        assert "fr" in languages
+        # English-only implementation
 
     async def test_transcribe_success(self) -> None:
         """Test successful transcription."""
@@ -242,7 +241,7 @@ class TestOpenAISpeechToTextClient:
     async def test_transcribe_with_language_and_prompt(self) -> None:
         """Test transcription with language and prompt parameters."""
         # Create mock response and session
-        mock_response = MockResponse(status=200, text_result="Bonjour monde")
+        mock_response = MockResponse(status=200, text_result="Hello world")
         mock_session = MockSession(mock_response)
 
         config = OpenAIConfig(api_key="test-key")
@@ -254,11 +253,11 @@ class TestOpenAISpeechToTextClient:
         audio = AudioChunk(data=b"audio_data", format=AudioFormat.WAV)
         result = await client.transcribe(
             audio,
-            language="fr",
-            prompt="This is French speech"
+            language="en",
+            prompt="This is English speech"
         )
 
-        assert result == "Bonjour monde"
+        assert result == "Hello world"
 
     async def test_transcribe_empty_audio_raises_error(self) -> None:
         """Test that empty audio data raises ValueError."""

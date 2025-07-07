@@ -205,7 +205,7 @@ class SpeechToTextClient(ABC):
 
         Args:
             audio: Audio chunk to transcribe
-            language: Language code (e.g., 'en', 'es') for better accuracy
+            language: Language code (currently supports 'en' for English)
             prompt: Context prompt to improve transcription accuracy
 
         Returns:
@@ -228,7 +228,7 @@ class SpeechToTextClient(ABC):
 
         Args:
             audio: Audio chunk to transcribe
-            language: Language code for better accuracy
+            language: Language code (currently supports 'en' for English)
             prompt: Context prompt to improve transcription accuracy
 
         Yields:
@@ -270,7 +270,7 @@ class SpeechToTextClient(ABC):
         """Get list of supported language codes.
 
         Returns:
-            List[str]: Language codes (e.g., ['en', 'es', 'fr'])
+            List[str]: Language codes (currently ['en'] for English-only)
         """
         pass
 
@@ -293,7 +293,7 @@ class TextToSpeechClient(ABC):
         Args:
             text: Text to convert to speech
             voice_id: Voice identifier for synthesis
-            language: Language code for synthesis
+            language: Language code (currently supports 'en' for English)
 
         Returns:
             bytes: Audio data (format depends on implementation)
@@ -316,7 +316,7 @@ class TextToSpeechClient(ABC):
         Args:
             text: Text to convert to speech
             voice_id: Voice identifier for synthesis
-            language: Language code for synthesis
+            language: Language code (currently supports 'en' for English)
 
         Yields:
             bytes: Audio chunks as they become available

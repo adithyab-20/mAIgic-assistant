@@ -93,7 +93,7 @@ class DummySpeechToTextClient(SpeechToTextClient):
             await audio_source.stop()
 
     async def get_supported_languages(self) -> List[str]:
-        return ["en", "es", "fr", "de"]
+        return ["en"]  # English-only implementation
 
 
 class DummyTextToSpeechClient(TextToSpeechClient):

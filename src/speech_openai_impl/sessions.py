@@ -258,9 +258,10 @@ class OpenAIRealtimeTranscriptionSession(RealtimeTranscriptionSession):
                 },
                 "turn_detection": {
                     "type": "server_vad",
-                    "threshold": 0.5,
-                    "prefix_padding_ms": 300,
-                    "silence_duration_ms": 500
+                    "threshold": 0.3,
+
+                    "prefix_padding_ms": 500,
+                    "silence_duration_ms": 700
                 },
                 "input_audio_noise_reduction": {
                     "type": "near_field"
@@ -389,7 +390,6 @@ class RealtimeSpeechToSpeechSession:
             await self.websocket.close()
         except Exception as e:
             logger.warning(f"Error closing WebSocket: {e}")
-            pass
 
 
 class OpenAIRealtimeClient:
@@ -429,6 +429,15 @@ class OpenAIRealtimeClient:
 
             # Configure the session
             await session.configure_transcription(model)
+
+            # Send a short silent audio chunk to "warm up" the stream
+            try:
+                await websocket.send(json.dumps({
+                    "type": "input_audio_buffer.append",
+                    "audio": base64.b64encode(b'\x00' * 3200).decode('utf-8')
+                }))
+            except Exception:
+                pass  # Ignore if connection is already closed
 
             return session
 
