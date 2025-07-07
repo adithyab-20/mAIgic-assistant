@@ -21,6 +21,31 @@ class AudioError(SpeechAPIError):
     pass
 
 
+class AudioSourceError(AudioError):
+    """Errors related to audio input sources."""
+    pass
+
+
 class APIError(SpeechAPIError):
     """Errors from the underlying API provider."""
+    pass
+
+
+class RealtimeSessionError(SpeechAPIError):
+    """Errors related to realtime session management."""
+    pass
+
+
+class SessionConnectionError(RealtimeSessionError):
+    """Errors when connecting to or maintaining realtime sessions."""
+    pass
+
+
+class SessionClosedError(RealtimeSessionError):
+    """Errors when trying to use a closed session."""
+    pass
+
+
+class RealtimeTranscriptionError(TranscriptionError):
+    """Errors specific to realtime transcription."""
     pass

@@ -4,8 +4,42 @@ from typing import AsyncGenerator, List, Optional
 
 import pytest
 
-from speech_api.interfaces import SpeechToTextClient, TextToSpeechClient
-from speech_api.types import AudioChunk
+from speech_api.interfaces import AudioSource, SpeechToTextClient, TextToSpeechClient
+from speech_api.types import AudioChunk, RealtimeSessionConfig, TranscriptionEvent
+
+
+class DummyAudioSource(AudioSource):
+    """Dummy audio source for testing."""
+
+    def __init__(self, chunks: List[bytes]):
+        self._chunks = chunks
+        self._index = 0
+        self._active = False
+
+    async def start(self) -> None:
+        self._active = True
+
+    async def stop(self) -> None:
+        self._active = False
+
+    async def read_chunk(self) -> Optional[bytes]:
+        if self._index < len(self._chunks):
+            chunk = self._chunks[self._index]
+            self._index += 1
+            return chunk
+        return None
+
+    @property
+    def sample_rate(self) -> int:
+        return 16000
+
+    @property
+    def channels(self) -> int:
+        return 1
+
+    @property
+    def is_active(self) -> bool:
+        return self._active
 
 
 class DummySpeechToTextClient(SpeechToTextClient):
@@ -36,17 +70,30 @@ class DummySpeechToTextClient(SpeechToTextClient):
 
     async def transcribe_realtime(
         self,
-        audio_stream: AsyncGenerator[AudioChunk, None],
-        language: Optional[str] = None,
-        prompt: Optional[str] = None,
-    ) -> AsyncGenerator[str, None]:
-        chunk_count = 0
-        async for chunk in audio_stream:
-            chunk_count += 1
-            yield f"chunk_{chunk_count}: {self._response_text}"
+        audio_source: AudioSource,
+        config: RealtimeSessionConfig,
+    ) -> AsyncGenerator[TranscriptionEvent, None]:
+        await audio_source.start()
+        try:
+            chunk_count = 0
+            while audio_source.is_active:
+                chunk = await audio_source.read_chunk()
+                if chunk is None:
+                    break
+                chunk_count += 1
+                # Create a dummy transcription event
+                event = TranscriptionEvent(
+                    text=f"chunk_{chunk_count}: {self._response_text}",
+                    is_final=True,
+                    confidence=0.95,
+                    timestamp=chunk_count * 1.0
+                )
+                yield event
+        finally:
+            await audio_source.stop()
 
     async def get_supported_languages(self) -> List[str]:
-        return ["en", "es", "fr", "de"]
+        return ["en"]  # English-only implementation
 
 
 class DummyTextToSpeechClient(TextToSpeechClient):
@@ -132,17 +179,24 @@ class TestSpeechToTextClient:
 
     @pytest.mark.asyncio
     async def test_transcribe_realtime_processes_stream(self, stt_client: SpeechToTextClient) -> None:
-        async def fake_audio_stream() -> AsyncGenerator[AudioChunk, None]:
-            yield AudioChunk(data=b"chunk1")
-            yield AudioChunk(data=b"chunk2")
+        # Create dummy audio source with test chunks
+        audio_source = DummyAudioSource([b"chunk1", b"chunk2"])
+
+        # Create dummy config
+        config = RealtimeSessionConfig(
+            model="test-model",
+            language="en"
+        )
 
         results = []
-        async for result in stt_client.transcribe_realtime(fake_audio_stream()):
-            results.append(result)
+        async for event in stt_client.transcribe_realtime(audio_source, config):
+            results.append(event)
 
         assert len(results) == 2
-        assert "chunk_1" in results[0]
-        assert "chunk_2" in results[1]
+        assert isinstance(results[0], TranscriptionEvent)
+        assert isinstance(results[1], TranscriptionEvent)
+        assert "chunk_1" in results[0].text
+        assert "chunk_2" in results[1].text
 
     @pytest.mark.asyncio
     async def test_get_supported_languages(self, stt_client: SpeechToTextClient) -> None:

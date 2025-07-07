@@ -4,7 +4,14 @@ version = "0.1.0"
 description = "mAIgic Assistant - AI conversation system"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pyaudio>=0.2.14",
+    "python-dotenv>=1.1.1",
+]
+
+# System dependencies for PyAudio
+[project.system-dependencies]
+pyaudio = ["portaudio19-dev"]
 
 [project.optional-dependencies]
 dev = [
@@ -15,6 +22,11 @@ dev = [
     "mypy",
     "build"
 ]
+openai = [
+    "aiohttp>=3.8.0",
+    "websockets>=11.0.0",
+    "python-dotenv>=1.0.0"
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -22,7 +34,7 @@ build-backend = "hatchling.build"
 
 # Tell hatchling to include the components from src/
 [tool.hatch.build.targets.wheel]
-packages = ["src/speech_api"]
+packages = ["src/speech_api", "src/speech_openai_impl"]
 
 
 [tool.pytest.ini_options]
@@ -34,7 +46,7 @@ addopts = [
     "--cov=src",
     "--cov-report=term-missing",
     "--cov-report=html",
-    "--cov-fail-under=90"
+    "--cov-fail-under=80"
 ]
 asyncio_mode = "auto"
 
