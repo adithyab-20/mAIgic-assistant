@@ -38,7 +38,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra speech
+            uv sync --extra dev --extra speech --extra email
       
       # Save cache
       - save_cache:
@@ -87,7 +87,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra speech
+            uv sync --extra dev --extra speech --extra email
       
       # Run ruff linting on all components
       - run:
@@ -129,7 +129,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra speech
+            uv sync --extra dev --extra speech --extra email
       
       # Build the package
       - run:
