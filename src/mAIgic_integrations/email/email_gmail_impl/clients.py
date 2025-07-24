@@ -6,6 +6,7 @@ This module provides a Gmail-specific implementation focused on AI assistant nee
 
 import base64
 import email
+import email.utils
 import os
 import re
 from datetime import datetime, timedelta
@@ -101,13 +102,13 @@ class GmailClient(EmailClient):
 
         # Load existing credentials
         if os.path.exists(self.config.token_path):
-            creds = Credentials.from_authorized_user_file(self.config.token_path, self.config.scopes)  # type: ignore[no-untyped-call]
+            creds = Credentials.from_authorized_user_file(self.config.token_path, self.config.scopes)
 
         # If no valid credentials, run OAuth flow
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 try:
-                    creds.refresh(Request())  # type: ignore[no-untyped-call]
+                    creds.refresh(Request())
                 except Exception as e:
                     raise EmailAuthenticationError(f"Failed to refresh credentials: {str(e)}") from e
             else:
@@ -125,7 +126,7 @@ class GmailClient(EmailClient):
             with open(self.config.token_path, 'w') as token:
                 token.write(creds.to_json())
 
-        return creds  # type: ignore[no-any-return]
+        return creds
 
     async def _test_connection(self) -> None:
         """Test Gmail API connection."""
