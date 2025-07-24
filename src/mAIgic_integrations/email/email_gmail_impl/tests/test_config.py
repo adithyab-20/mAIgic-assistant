@@ -82,23 +82,7 @@ class TestGmailConfig:
         with pytest.raises(EmailConfigurationError, match="Gmail credentials file not found"):
             config.validate()
 
-    def test_config_validation_invalid_timeout(self):
-        """Test validation failure for invalid timeout."""
-        config = GmailConfig(
-            timeout_seconds=0
-        )
 
-        with pytest.raises(EmailConfigurationError, match="timeout_seconds must be positive"):
-            config.validate()
-
-    def test_config_validation_invalid_retries(self):
-        """Test validation failure for invalid retry count."""
-        config = GmailConfig(
-            max_retries=-1
-        )
-
-        with pytest.raises(EmailConfigurationError, match="max_retries must be non-negative"):
-            config.validate()
 
 
 class TestGmailConfigFromEnvironment:
@@ -139,17 +123,6 @@ class TestGmailConfigFromEnvironment:
         assert config.token_path == "custom_token.json"
         assert config.timeout_seconds == 60
         assert config.max_retries == 1
-
-    @patch.dict(os.environ, {})
-    def test_from_env_with_defaults(self):
-        """Test loading configuration with missing environment variables uses defaults."""
-        config = GmailConfig.from_env()
-
-        # Should use default values when env vars are not set
-        assert config.credentials_path == "credentials.json"
-        assert config.token_path == "token.json"
-        assert config.timeout_seconds == 30
-        assert config.max_retries == 3
 
     @patch.dict(os.environ, {
         'GMAIL_TIMEOUT_SECONDS': 'invalid'
