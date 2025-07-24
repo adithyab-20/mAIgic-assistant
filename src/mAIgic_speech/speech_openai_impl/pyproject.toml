@@ -7,11 +7,11 @@ requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.8.0",
     "websockets>=11.0.0",
-    "maigic-speech-api>=0.1.0"
+    "maigic-speech-api>=0.1.0",
+    "pyaudio>=0.2.14"
 ]
 
-[tool.uv.sources]
-maigic-speech-api = { workspace = true }
+# Workspace sources are defined in root pyproject.toml
 
 [build-system]
 requires = ["hatchling"]

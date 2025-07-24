@@ -1,13 +1,14 @@
-"""mAIgic Integrations Component
+"""
+mAIgic Integrations Package.
 
-This component contains all external data source integrations.
-Each integration follows the pattern of api (interfaces) + implementations.
-
-Future integrations:
-- email/: Email integration
-- calendar/: Calendar integration
-- logging/: Activity logging
+This package provides integrations with various external services and APIs
+for the mAIgic AI assistant platform.
 """
 
-# TODO: Add exports when we implement integration modules
-__all__: list[str] = []
+from typing import List
+
+__version__ = "0.1.0"
+
+__all__: List[str] = [
+    # Add integration modules here as they are developed
+]

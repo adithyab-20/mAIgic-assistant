@@ -1,45 +1,60 @@
+# UV Workspace Configuration
+[tool.uv.workspace]
+members = [
+    "src/mAIgic_core",
+    "src/mAIgic_speech",
+    "src/mAIgic_speech/speech_api", 
+    "src/mAIgic_speech/speech_openai_impl",
+    "src/mAIgic_integrations",
+    "src/mAIgic_integrations/email/email_api",
+    "src/mAIgic_integrations/email/email_gmail_impl",
+]
+
 [project]
 name = "mAIgic-assistant"
 version = "0.1.0"
-description = "mAIgic Assistant - AI conversation system with voice, email, and calendar integration"
+description = "mAIgic Assistant - Meta-package for AI personal assistant framework"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    # Only truly shared dependencies
-    "python-dotenv>=1.1.1",  # Configuration management across all components
+    # Meta-package depends on core components
+    "maigic-core>=0.1.0",
+    "maigic-integrations>=0.1.0",
 ]
 
-# System dependencies for PyAudio
-[project.system-dependencies]
-pyaudio = ["portaudio19-dev"]
+[tool.uv.sources]
+maigic-core = { workspace = true }
+maigic-integrations = { workspace = true }
+maigic-speech = { workspace = true }
+maigic-speech-api = { workspace = true }
+maigic-speech-openai-impl = { workspace = true }
+maigic-email-api = { workspace = true }
+maigic-email-gmail = { workspace = true }
 
 [project.optional-dependencies]
-# Speech processing capabilities
+# Speech processing features
 speech = [
-    "pyaudio>=0.2.14",       # Audio input/output
-    "aiohttp>=3.8.0",        # HTTP client for OpenAI API
-    "websockets>=11.0.0",    # WebSocket client for real-time transcription
+    "maigic-speech[openai]>=0.1.0",
+]
+
+# Email integration features
+email = [
+    "maigic-integrations[gmail]>=0.1.0",
 ]
 
 # Development and testing dependencies
 dev = [
-    "pytest",
-    "pytest-cov",
-    "pytest-asyncio",
-    "ruff",
-    "mypy",
-    "build"
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0", 
+    "pytest-asyncio>=0.21.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "build>=0.10.0",
 ]
 
-# OpenAI-specific dependencies (alias for speech for backward compatibility)
-openai = [
-    "mAIgic-assistant[speech]",
-]
-
-# Install everything for development
+# Install everything for full development
 all = [
-    "mAIgic-assistant[speech]",
-    # Future: email, calendar, integrations will be added here
+    "mAIgic-assistant[email,speech]",
 ]
 
 [build-system]

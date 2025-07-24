@@ -17,8 +17,6 @@ mAIgic-assistant/
 │   └── mAIgic_integrations/   # External integrations (future)
 ```
 
-
-
 ## Installation
 
 ### Base Installation
