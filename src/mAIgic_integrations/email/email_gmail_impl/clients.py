@@ -102,13 +102,13 @@ class GmailClient(EmailClient):
 
         # Load existing credentials
         if os.path.exists(self.config.token_path):
-            creds = Credentials.from_authorized_user_file(self.config.token_path, self.config.scopes)
+            creds = Credentials.from_authorized_user_file(self.config.token_path, self.config.scopes)  # type: ignore[no-untyped-call]
 
         # If no valid credentials, run OAuth flow
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 try:
-                    creds.refresh(Request())
+                    creds.refresh(Request())  # type: ignore[no-untyped-call]
                 except Exception as e:
                     raise EmailAuthenticationError(f"Failed to refresh credentials: {str(e)}") from e
             else:
@@ -126,7 +126,7 @@ class GmailClient(EmailClient):
             with open(self.config.token_path, 'w') as token:
                 token.write(creds.to_json())
 
-        return creds
+        return creds  # type: ignore[no-any-return]
 
     async def _test_connection(self) -> None:
         """Test Gmail API connection."""
