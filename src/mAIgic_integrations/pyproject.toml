@@ -7,6 +7,7 @@ dependencies = [
     "maigic-core>=0.1.0",
     "maigic-email-api>=0.1.0",
     "maigic-calendar-api>=0.1.0",
+    "python-dotenv>=1.0.0",
 ]
 
 # Workspace sources are defined in root pyproject.toml
@@ -19,6 +20,9 @@ gmail = [
 calendar = [
     "maigic-calendar>=0.1.0",
 ]
+
+[project.scripts]
+maigic-integrations-setup = "mAIgic_integrations.setup:main"
 
 [build-system]
 requires = ["hatchling"]

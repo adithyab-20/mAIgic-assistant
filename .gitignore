@@ -5,6 +5,7 @@ __pycache__/
 *DS_Store
 .cursor/
 token.json
+credentials/
 
 # C extensions
 *.so

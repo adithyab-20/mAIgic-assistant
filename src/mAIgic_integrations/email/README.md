@@ -1,12 +1,11 @@
-# Email Integration Package
+# Email Integration
 
-A unified email interface for the mAIgic Assistant with clean architecture supporting multiple email providers.
+Gmail integration with comprehensive email operations and OAuth2 authentication for the mAIgic Assistant.
 
 ## Overview
 
-This package provides a comprehensive email integration system with:
-
-- **Abstract Interfaces**: Clean `EmailClient` and `EmailProvider` interfaces
+This package provides:
+- **Abstract Email Interfaces**: Clean `EmailClient` and `EmailProvider` interfaces
 - **Gmail Implementation**: Full-featured Gmail client with OAuth2 authentication
 - **Async Support**: Complete async/await patterns throughout
 - **Type Safety**: Comprehensive type hints and data models
@@ -21,9 +20,16 @@ email/
 └── examples/            # Usage examples
 ```
 
-## Quick Start
+## Installation
 
-### Gmail Setup
+```bash
+# Install with email capabilities
+uv sync --extra email
+```
+
+## Setup
+
+### Google Cloud Console
 
 1. **Create Google Cloud Project**
    - Go to [Google Cloud Console](https://console.cloud.google.com/)
@@ -35,31 +41,57 @@ email/
    - Create OAuth client ID (Desktop application)
    - Download `credentials.json`
 
-3. **Install and Use**
-   ```python
-   from mAIgic_integrations.email import GmailClient, GmailConfig
-   
-   config = GmailConfig(
-       credentials_path="credentials.json",
-       token_path="token.json"
-   )
-   
-   async with GmailClient(config) as client:
-       # Get recent emails
-       emails = await client.get_recent_emails(days=7)
-       
-       # Search emails
-       results = await client.search_emails("project status")
-       
-       # Get account info
-       stats = await client.get_account_info()
-   ```
+### Using Setup Wizard
+
+```bash
+# Interactive setup
+uv run maigic-integrations-setup --service gmail
+
+# Check status
+uv run maigic-integrations-setup --list
+```
+
+## Usage
+
+### Direct Client Usage
+
+```python
+from mAIgic_integrations.email import GmailClient, GmailConfig
+
+config = GmailConfig(
+    credentials_path="credentials.json",
+    token_path="token.json"
+)
+
+async with GmailClient(config) as client:
+    # Get recent emails
+    emails = await client.get_recent_emails(days=7)
+    
+    # Search emails
+    results = await client.search_emails("project status")
+    
+    # Get account info
+    stats = await client.get_account_info()
+```
+
+### Registry Pattern
+
+```python
+from mAIgic_integrations import create_email_client
+
+# Automatic credential discovery
+client = create_email_client("google_gmail")
+async with client:
+    emails = await client.get_recent_emails(count=10)
+    for email in emails:
+        print(f"{email.subject} from {email.sender}")
+```
 
 ## Core Components
 
 ### EmailClient Interface
 
-The main interface providing:
+Main interface providing:
 - `get_emails()` - Retrieve emails with filtering
 - `search_emails()` - Search with query strings
 - `get_email()` - Get specific email by ID
@@ -68,10 +100,10 @@ The main interface providing:
 
 ### Data Types
 
-- **Email**: Complete email representation
+- **Email**: Complete email representation with headers, body, attachments
 - **EmailAddress**: Email address with optional display name
 - **EmailStats**: Account statistics and metrics
-- **Attachment**: File attachment handling
+- **Attachment**: File attachment handling with download support
 
 ### Exception Hierarchy
 
@@ -83,10 +115,11 @@ Comprehensive error handling:
 
 ## Examples
 
-See the `examples/` directory for:
-- **basic_operations.py** - Fundamental Gmail operations
-- **advanced_operations.py** - Comprehensive AI integration
-- **credential_setup.py** - Credential setup and validation tool
+Run the provided examples:
+
+```bash
+uv run python src/mAIgic_integrations/email/email_gmail_impl/examples/basic_gmail_operations.py
+```
 
 ## Testing
 
@@ -98,11 +131,17 @@ uv run pytest src/mAIgic_integrations/email/ -v
 uv run pytest src/mAIgic_integrations/email/email_gmail_impl/tests/ -v
 ```
 
-## Future Providers
+## Development
 
-The architecture supports additional email providers:
-- Outlook/Exchange
-- Yahoo Mail
-- IMAP/SMTP servers
+### Type Checking
 
-Each provider implements the same `EmailClient` interface for consistent usage patterns. 
+```bash
+uv run mypy src/mAIgic_integrations/email/
+```
+
+### Code Quality
+
+```bash
+uv run ruff check src/mAIgic_integrations/email/
+uv run ruff format src/mAIgic_integrations/email/
+``` 

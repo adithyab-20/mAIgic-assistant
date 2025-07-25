@@ -22,6 +22,7 @@ dependencies = [
     # Meta-package depends on core components
     "maigic-core>=0.1.0",
     "maigic-integrations>=0.1.0",
+    "types-python-dateutil>=2.9.0.20250708",
 ]
 
 [tool.uv.sources]

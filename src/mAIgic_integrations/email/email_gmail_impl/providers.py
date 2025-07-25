@@ -7,16 +7,59 @@ handling configuration and client creation.
 
 from typing import Any, List, cast
 
+from ...registry import CredentialManager, EmailIntegrationProvider
 from ..email_api.exceptions import EmailConfigurationError
-from ..email_api.interfaces import EmailClient, EmailProvider
+from ..email_api.interfaces import EmailClient
 from .clients import GmailClient
 from .config import GmailConfig
 
 
-class GmailProvider(EmailProvider):
+class GmailProvider(EmailIntegrationProvider):
     """Gmail implementation of EmailProvider."""
 
-    def create_client(self, **config: Any) -> EmailClient:
+    def get_service_name(self) -> str:
+        """Get the service name for this provider."""
+        return "google_gmail"
+
+    def is_available(self) -> bool:
+        """Check if this provider's dependencies are available."""
+        try:
+            import google.auth  # noqa: F401
+            import google_auth_oauthlib.flow  # noqa: F401
+            import googleapiclient.discovery  # noqa: F401
+            return True
+        except ImportError:
+            return False
+
+    def create_client(self, user_id: str, credential_manager: CredentialManager, **kwargs: Any) -> EmailClient:
+        """Create a client instance using the credential manager."""
+        # Get credentials from credential manager
+        stored_credentials = credential_manager.get_credentials(user_id, self.get_service_name())
+
+        if not stored_credentials:
+            raise EmailConfigurationError(
+                f"No credentials found for user '{user_id}' and service '{self.get_service_name()}'. "
+                "Please run credential setup first."
+            )
+
+        # Create configuration from stored credentials and kwargs
+        config = {
+            "credentials_path": stored_credentials.get("credentials_path"),
+            "token_path": stored_credentials.get("token_path", "token.json"),
+            "timeout_seconds": kwargs.get("timeout_seconds", stored_credentials.get("timeout_seconds", 30)),
+            "max_retries": kwargs.get("max_retries", stored_credentials.get("max_retries", 3))
+        }
+
+        # Create Gmail config and client
+        gmail_config = GmailConfig(**config)
+        gmail_config.validate()
+        return GmailClient(gmail_config)
+
+    def get_required_credentials(self) -> List[str]:
+        """Get list of required credential fields."""
+        return ["credentials_path"]
+
+    def create_client_legacy(self, **config: Any) -> EmailClient:
         """
         Create a Gmail client instance.
 

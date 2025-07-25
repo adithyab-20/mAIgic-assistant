@@ -61,12 +61,12 @@ class CalendarClient(ABC):
     @abstractmethod
     async def __aenter__(self) -> "CalendarClient":
         """Enter async context and connect to calendar service."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         """Exit async context and disconnect from calendar service."""
-        pass
+        pass  # pragma: no cover
 
     # Universal Methods (read-only or minimal permissions)
 
@@ -96,7 +96,7 @@ class CalendarClient(ABC):
             CalendarAuthenticationError: If authentication fails
             CalendarTimeError: If time_range is invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def find_available_slots(
@@ -120,7 +120,7 @@ class CalendarClient(ABC):
             CalendarTimeError: If query time range is invalid
             CalendarValidationError: If query parameters are invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def search_events(
@@ -143,7 +143,7 @@ class CalendarClient(ABC):
             CalendarConnectionError: If calendar service unavailable
             CalendarValidationError: If search query is invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def get_event(
@@ -164,7 +164,7 @@ class CalendarClient(ABC):
             CalendarPermissionError: If no read access to event
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     # Organizer Methods (requires organizer permissions)
 
@@ -195,7 +195,7 @@ class CalendarClient(ABC):
             CalendarValidationError: If event data is invalid
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def update_my_event(
@@ -224,7 +224,7 @@ class CalendarClient(ABC):
             CalendarSchedulingError: If changes create conflicts
             CalendarValidationError: If changes are invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def delete_my_event(
@@ -252,7 +252,7 @@ class CalendarClient(ABC):
             CalendarPermissionError: If not organizer of event
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     # Attendee Methods (requires attendee permissions)
 
@@ -281,7 +281,7 @@ class CalendarClient(ABC):
             CalendarPermissionError: If cannot respond (e.g., already responded)
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def suggest_reschedule(
@@ -310,7 +310,7 @@ class CalendarClient(ABC):
             CalendarTimeError: If proposed time is invalid
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     # Batch Operations (atomic operations for complex scenarios)
 
@@ -339,7 +339,7 @@ class CalendarClient(ABC):
             CalendarPermissionError: If insufficient permissions
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def batch_update_events(
@@ -364,7 +364,7 @@ class CalendarClient(ABC):
             CalendarPermissionError: If insufficient permissions for any event
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     # Permission and Information Methods
 
@@ -389,7 +389,7 @@ class CalendarClient(ABC):
             CalendarEventNotFoundError: If event doesn't exist
             CalendarConnectionError: If calendar service unavailable
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def get_calendars(self) -> list[CalendarInfo]:
@@ -406,7 +406,7 @@ class CalendarClient(ABC):
             CalendarConnectionError: If calendar service unavailable
             CalendarAuthenticationError: If authentication fails
         """
-        pass
+        pass  # pragma: no cover
 
 
 class CalendarProvider(ABC):
@@ -431,7 +431,7 @@ class CalendarProvider(ABC):
         Raises:
             CalendarConfigurationError: If config is invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def validate_config(self, config: dict[str, Any]) -> bool:
@@ -444,7 +444,7 @@ class CalendarProvider(ABC):
         Returns:
             True if valid, False otherwise
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_required_config_keys(self) -> list[str]:
@@ -454,14 +454,14 @@ class CalendarProvider(ABC):
         Returns:
             List of required configuration keys
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_optional_config_keys(self) -> list[str]:
         """Get list of optional configuration keys."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_config_description(self, key: str) -> str:
         """Get human-readable description of a configuration key."""
-        pass
+        pass  # pragma: no cover

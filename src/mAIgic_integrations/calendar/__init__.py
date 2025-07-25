@@ -98,8 +98,13 @@ from .calendar_api.models import (
     UpdateResult,
 )
 
-# Provider implementations will be imported here as they are developed
-# from .calendar_google_impl import GoogleCalendarClient, GoogleCalendarConfig, GoogleCalendarProvider
+# Provider implementations
+try:
+    from .calendar_google_impl import GoogleCalendarProvider  # noqa: F401
+    _GOOGLE_CALENDAR_AVAILABLE = True
+except ImportError:
+    # Google Calendar dependencies not available
+    _GOOGLE_CALENDAR_AVAILABLE = False
 
 __all__ = [
     # Core data types
@@ -150,11 +155,16 @@ __all__ = [
     "CalendarTimeError",
     "CalendarValidationError",
 
-    # Provider implementations (to be added as developed)
-    # "GoogleCalendarClient",
-    # "GoogleCalendarProvider",
-    # "GoogleCalendarConfig",
+    # Provider implementations (added dynamically based on availability)
 ]
+
+# Add Google Calendar components if available
+if _GOOGLE_CALENDAR_AVAILABLE:
+    __all__.extend([
+        "GoogleCalendarClient",
+        "GoogleCalendarProvider",
+        "GoogleCalendarConfig",
+    ])
 
 # Version information
 __version__ = "0.1.0"

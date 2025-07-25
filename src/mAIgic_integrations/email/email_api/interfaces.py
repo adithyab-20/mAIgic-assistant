@@ -43,7 +43,7 @@ class EmailClient(ABC):
             EmailConnectionError: If connection fails
             EmailAuthenticationError: If authentication fails
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
@@ -58,7 +58,7 @@ class EmailClient(ABC):
             exc_val: Exception value if an exception occurred
             exc_tb: Exception traceback if an exception occurred
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def get_emails(
@@ -87,7 +87,7 @@ class EmailClient(ABC):
             EmailConnectionError: If not connected or connection fails
             EmailReceiveError: If unable to retrieve emails
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def search_emails(self, query: str, limit: int = 10) -> List[Email]:
@@ -108,7 +108,7 @@ class EmailClient(ABC):
             EmailConnectionError: If not connected or connection fails
             EmailSearchError: If search operation fails
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def get_recent_emails(self, days: int = 7) -> List[Email]:
@@ -128,7 +128,7 @@ class EmailClient(ABC):
             EmailConnectionError: If not connected or connection fails
             EmailReceiveError: If unable to retrieve emails
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def get_email(self, message_id: str) -> Email:
@@ -146,7 +146,7 @@ class EmailClient(ABC):
             EmailNotFoundError: If email with given ID doesn't exist
             EmailReceiveError: If unable to retrieve email
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def get_account_info(self) -> EmailStats:
@@ -160,7 +160,7 @@ class EmailClient(ABC):
             EmailConnectionError: If not connected or connection fails
             EmailReceiveError: If unable to retrieve account info
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def download_attachment(self, message_id: str, attachment_id: str) -> bytes:
@@ -179,7 +179,7 @@ class EmailClient(ABC):
             EmailNotFoundError: If message or attachment doesn't exist
             EmailAttachmentError: If unable to download attachment
         """
-        pass
+        pass  # pragma: no cover
 
 
 class EmailProvider(ABC):
@@ -203,7 +203,7 @@ class EmailProvider(ABC):
         Raises:
             EmailConfigurationError: If configuration is invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def validate_config(self, **config: Any) -> bool:
@@ -219,7 +219,7 @@ class EmailProvider(ABC):
         Raises:
             EmailConfigurationError: If configuration is invalid
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_required_config_keys(self) -> List[str]:
@@ -229,14 +229,14 @@ class EmailProvider(ABC):
         Returns:
             List of required configuration key names
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_optional_config_keys(self) -> List[str]:
         """Get list of optional configuration keys."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_config_description(self) -> str:
         """Get human-readable description of configuration requirements."""
-        pass
+        pass  # pragma: no cover

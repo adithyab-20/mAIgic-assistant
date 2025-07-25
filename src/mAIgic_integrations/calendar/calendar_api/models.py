@@ -105,9 +105,27 @@ class CalendarDateTime:
         from datetime import timedelta
         return CalendarDateTime(self.dt + timedelta(hours=hours))
 
+    def add_days(self, days: int) -> "CalendarDateTime":
+        """Add days to this time."""
+        from datetime import timedelta
+        return CalendarDateTime(self.dt + timedelta(days=days))
+
+    def replace(self, hour: Optional[int] = None, minute: Optional[int] = None) -> "CalendarDateTime":
+        """Replace hour and/or minute components."""
+        dt = self.dt
+        if hour is not None:
+            dt = dt.replace(hour=hour)
+        if minute is not None:
+            dt = dt.replace(minute=minute)
+        return CalendarDateTime(dt)
+
     def to_iso(self) -> str:
         """Convert to ISO format string."""
         return self.dt.isoformat()
+
+    def __str__(self) -> str:
+        """Clean string representation."""
+        return self.dt.strftime("%Y-%m-%d %H:%M")
 
 
 @dataclass

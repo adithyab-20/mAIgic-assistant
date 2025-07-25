@@ -1,3 +1,4 @@
+# pragma: no cover
 """Shared test fixtures and configuration for speech_openai_impl tests."""
 
 import asyncio
