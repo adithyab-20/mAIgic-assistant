@@ -13,8 +13,13 @@ mAIgic-assistant/
 │   │   ├── speech_api/         # Abstract interfaces
 │   │   ├── speech_openai_impl/ # OpenAI implementation
 │   │   └── examples/           # Speech examples
-│   ├── mAIgic_core/           # Assistant logic (future)
-│   └── mAIgic_integrations/   # External integrations (future)
+│   ├── mAIgic_core/           # Assistant logic
+│   └── mAIgic_integrations/   # External integrations
+│       ├── email/             # Email integration
+│       │   ├── email_api/     # Abstract interfaces
+│       │   └── email_gmail_impl/ # Gmail implementation
+│       └── calendar/          # Calendar integration
+│           └── calendar_api/  # Abstract interfaces
 ```
 
 ## Installation
@@ -32,11 +37,17 @@ uv sync
 # Speech capabilities (OpenAI integration)
 uv sync --extra speech
 
+# Email integration (Gmail)
+uv sync --extra email
+
+# Calendar integration
+uv sync --extra calendar
+
 # Development tools
 uv sync --extra dev
 
 # Everything for development
-uv sync --extra dev --extra speech --extra all
+uv sync --extra dev --extra speech --extra email --extra calendar --extra all
 ```
 
 ### Traditional pip Installation
@@ -46,6 +57,15 @@ pip install mAIgic-assistant
 
 # With speech capabilities
 pip install "mAIgic-assistant[speech]"
+
+# With email integration
+pip install "mAIgic-assistant[email]"
+
+# With calendar integration
+pip install "mAIgic-assistant[calendar]"
+
+# With all integrations
+pip install "mAIgic-assistant[speech,email,calendar]"
 
 # For development
 pip install "mAIgic-assistant[dev]"
@@ -78,24 +98,58 @@ async with client:
 - Real-time WebSocket transcription
 - Multiple processing modes (batch/streaming/realtime)
 
-### Core Component (`mAIgic_core`) - Coming Soon
+### Email Integration (`mAIgic_integrations/email`)
 
-Central assistant logic and orchestration engine.
+Gmail integration with comprehensive email operations for AI assistants.
 
-**Planned Features:**
-- Session management
-- Context correlation
-- Multi-component coordination
-- Configuration management
+**Dependencies:** `google-api-python-client`, `google-auth`
 
-### Integrations Component (`mAIgic_integrations`) - Coming Soon
+```python
+from mAIgic_integrations.email import GmailClient, GmailConfig
 
-External service integrations following the same pattern as speech.
+# Configure and use
+config = GmailConfig(
+    credentials_path="credentials.json",
+    token_path="token.json"
+)
 
-**Planned Integrations:**
-- **Email** - Gmail, Outlook, IMAP/SMTP
-- **Calendar** - Google Calendar, Outlook Calendar, CalDAV
-- **Logging** - Activity tracking and analytics
+async with GmailClient(config) as client:
+    emails = await client.get_recent_emails(count=10)
+    for email in emails:
+        print(f"{email.subject} - {email.sender}")
+```
+
+**Features:**
+- Gmail API integration with OAuth2
+- Rich email data models  
+- Advanced search capabilities
+- Account information and statistics
+
+### Calendar Integration (`mAIgic_integrations/calendar`)
+
+Role-based calendar integration with intelligent scheduling support for AI assistants.
+
+**Current Status:** Interface defined, providers in development
+
+```python
+from mAIgic_integrations.calendar import (
+    CalendarClient, Event, TimeSlot, CalendarDateTime
+)
+
+# Future Google Calendar implementation
+# async with GoogleCalendarClient(config) as client:
+#     today = CalendarDateTime.now()
+#     events = await client.get_events(TimeSlot(today, today.add_hours(24)))
+#     
+#     meeting = Event(title="Team Meeting", time_slot=time_slot)
+#     result = await client.create_my_event(meeting)
+```
+
+**Features:**
+- Role-based permission model (organizer vs attendee)
+- Rich event data with conflict detection
+- Time abstraction with timezone support
+- Availability finding and smart scheduling
 
 ## Speech Features
 
@@ -167,7 +221,7 @@ uv run python src/mAIgic_speech/examples/realtime_transcription.py
 ### Environment Setup
 ```bash
 # Install all development dependencies
-uv sync --extra dev --extra speech
+uv sync --extra dev --extra speech --extra email --extra calendar
 
 # Run tests
 uv run pytest
@@ -185,6 +239,15 @@ uv run ruff check src/
 uv run pytest src/mAIgic_speech/
 uv run pytest src/mAIgic_speech/speech_api/tests/
 uv run pytest src/mAIgic_speech/speech_openai_impl/tests/
+
+# Test email integration
+uv run pytest src/mAIgic_integrations/email/
+uv run pytest src/mAIgic_integrations/email/email_api/tests/
+uv run pytest src/mAIgic_integrations/email/email_gmail_impl/tests/
+
+# Test calendar integration
+uv run pytest src/mAIgic_integrations/calendar/
+uv run pytest src/mAIgic_integrations/calendar/calendar_api/tests/
 ```
 
 ### Quality Standards

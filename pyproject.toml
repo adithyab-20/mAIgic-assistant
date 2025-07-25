@@ -8,6 +8,8 @@ members = [
     "src/mAIgic_integrations",
     "src/mAIgic_integrations/email/email_api",
     "src/mAIgic_integrations/email/email_gmail_impl",
+    "src/mAIgic_integrations/calendar",
+    "src/mAIgic_integrations/calendar/calendar_api",
 ]
 
 [project]
@@ -30,6 +32,8 @@ maigic-speech-api = { workspace = true }
 maigic-speech-openai-impl = { workspace = true }
 maigic-email-api = { workspace = true }
 maigic-email-gmail = { workspace = true }
+maigic-calendar = { workspace = true }
+maigic-calendar-api = { workspace = true }
 
 [project.optional-dependencies]
 # Speech processing features
@@ -40,6 +44,11 @@ speech = [
 # Email integration features
 email = [
     "maigic-integrations[gmail]>=0.1.0",
+]
+
+# Calendar integration features
+calendar = [
+    "maigic-integrations[calendar]>=0.1.0",
 ]
 
 # Development and testing dependencies
@@ -54,7 +63,7 @@ dev = [
 
 # Install everything for full development
 all = [
-    "mAIgic-assistant[email,speech]",
+    "mAIgic-assistant[email,speech,calendar]",
 ]
 
 [build-system]

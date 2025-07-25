@@ -9,6 +9,8 @@ resolution-markers = [
 [manifest]
 members = [
     "maigic-assistant",
+    "maigic-calendar",
+    "maigic-calendar-api",
     "maigic-core",
     "maigic-email-api",
     "maigic-email-gmail",
@@ -402,8 +404,11 @@ dependencies = [
 
 [package.optional-dependencies]
 all = [
-    { name = "maigic-integrations", extra = ["gmail"] },
+    { name = "maigic-integrations", extra = ["calendar", "gmail"] },
     { name = "maigic-speech", extra = ["openai"] },
+]
+calendar = [
+    { name = "maigic-integrations", extra = ["calendar"] },
 ]
 dev = [
     { name = "build" },
@@ -423,9 +428,10 @@ speech = [
 [package.metadata]
 requires-dist = [
     { name = "build", marker = "extra == 'dev'", specifier = ">=0.10.0" },
-    { name = "maigic-assistant", extras = ["email", "speech"], marker = "extra == 'all'" },
+    { name = "maigic-assistant", extras = ["email", "speech", "calendar"], marker = "extra == 'all'" },
     { name = "maigic-core", editable = "src/mAIgic_core" },
     { name = "maigic-integrations", editable = "src/mAIgic_integrations" },
+    { name = "maigic-integrations", extras = ["calendar"], marker = "extra == 'calendar'", editable = "src/mAIgic_integrations" },
     { name = "maigic-integrations", extras = ["gmail"], marker = "extra == 'email'", editable = "src/mAIgic_integrations" },
     { name = "maigic-speech", extras = ["openai"], marker = "extra == 'speech'", editable = "src/mAIgic_speech" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0.0" },
@@ -434,7 +440,27 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
 ]
-provides-extras = ["speech", "email", "dev", "all"]
+provides-extras = ["speech", "email", "calendar", "dev", "all"]
+
+[[package]]
+name = "maigic-calendar"
+version = "0.1.0"
+source = { editable = "src/mAIgic_integrations/calendar" }
+dependencies = [
+    { name = "maigic-calendar-api" },
+    { name = "maigic-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "maigic-calendar-api", specifier = ">=0.1.0" },
+    { name = "maigic-core", specifier = ">=0.1.0" },
+]
+
+[[package]]
+name = "maigic-calendar-api"
+version = "0.1.0"
+source = { editable = "src/mAIgic_integrations/calendar/calendar_api" }
 
 [[package]]
 name = "maigic-core"
@@ -480,22 +506,28 @@ name = "maigic-integrations"
 version = "0.1.0"
 source = { editable = "src/mAIgic_integrations" }
 dependencies = [
+    { name = "maigic-calendar-api" },
     { name = "maigic-core" },
     { name = "maigic-email-api" },
 ]
 
 [package.optional-dependencies]
+calendar = [
+    { name = "maigic-calendar" },
+]
 gmail = [
     { name = "maigic-email-gmail" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "maigic-calendar", marker = "extra == 'calendar'", editable = "src/mAIgic_integrations/calendar" },
+    { name = "maigic-calendar-api", editable = "src/mAIgic_integrations/calendar/calendar_api" },
     { name = "maigic-core", editable = "src/mAIgic_core" },
     { name = "maigic-email-api", editable = "src/mAIgic_integrations/email/email_api" },
     { name = "maigic-email-gmail", marker = "extra == 'gmail'", editable = "src/mAIgic_integrations/email/email_gmail_impl" },
 ]
-provides-extras = ["gmail"]
+provides-extras = ["gmail", "calendar"]
 
 [[package]]
 name = "maigic-speech"

@@ -87,7 +87,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra speech --extra email
+            uv sync --extra dev --extra all
       
       # Run ruff linting on all components
       - run:
@@ -129,7 +129,7 @@ jobs:
           name: Install dependencies
           command: |
             source $BASH_ENV
-            uv sync --extra dev --extra speech --extra email
+            uv sync --extra dev --extra all
       
       # Build the package
       - run:

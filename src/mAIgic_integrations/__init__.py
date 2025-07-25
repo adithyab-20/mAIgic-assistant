@@ -10,5 +10,11 @@ from typing import List
 __version__ = "0.1.0"
 
 __all__: List[str] = [
-    # Add integration modules here as they are developed
+    # Email integration
+    "email",
+
+    # Calendar integration
+    "calendar",
+
+    # Add additional integration modules here as they are developed
 ]
