@@ -1,14 +1,15 @@
 [project]
 name = "maigic-core"
 version = "0.1.0"
-description = "mAIgic Core Component - Central assistant logic and orchestration"
-readme = "README.md"
+description = "mAIgic Core - Context management and orchestration"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "python-dotenv>=1.0.0",
+]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["mAIgic_core"] 
+packages = ["mAIgic_core"]

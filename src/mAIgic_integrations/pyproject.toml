@@ -1,14 +1,32 @@
 [project]
 name = "maigic-integrations"
 version = "0.1.0"
-description = "mAIgic Integrations Component - External service integrations"
-readme = "README.md"
+description = "mAIgic Integrations - Meta-package for all integrations"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "maigic-core>=0.1.0",
+    "maigic-email-api>=0.1.0",
+    "maigic-calendar-api>=0.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+# Workspace sources are defined in root pyproject.toml
+
+[project.optional-dependencies]
+gmail = [
+    "maigic-email-gmail>=0.1.0",
+]
+
+calendar = [
+    "maigic-calendar>=0.1.0",
+]
+
+[project.scripts]
+maigic-integrations-setup = "mAIgic_integrations.setup:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["mAIgic_integrations"] 
+packages = ["mAIgic_integrations"]

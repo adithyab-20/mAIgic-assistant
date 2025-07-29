@@ -1,13 +1,42 @@
-"""mAIgic Integrations Component
+"""
+mAIgic Integrations Package.
 
-This component contains all external data source integrations.
-Each integration follows the pattern of api (interfaces) + implementations.
+This package provides integrations with various external services and APIs
+for the mAIgic AI assistant platform.
 
-Future integrations:
-- email/: Email integration
-- calendar/: Calendar integration
-- logging/: Activity logging
+Key Components:
+- IntegrationRegistry: Central registry for discovering and creating clients
+- IntegrationConfig: Environment-driven configuration management
+- CredentialManager: Secure credential storage and management
 """
 
-# TODO: Add exports when we implement integration modules
-__all__: list[str] = []
+from typing import List
+
+# Core integration system
+from .config import IntegrationConfig
+from .credentials import CredentialManager, create_credential_manager
+from .registry import (
+    IntegrationRegistry,
+    create_calendar_client,
+    create_email_client,
+    get_available_integrations,
+    get_registry,
+)
+
+__version__ = "0.1.0"
+
+__all__: List[str] = [
+    # Core integration system
+    "IntegrationConfig",
+    "CredentialManager",
+    "create_credential_manager",
+    "IntegrationRegistry",
+    "get_registry",
+    "create_calendar_client",
+    "create_email_client",
+    "get_available_integrations",
+
+    # Integration modules
+    "email",
+    "calendar",
+]

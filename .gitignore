@@ -4,9 +4,17 @@ __pycache__/
 *$py.class
 *DS_Store
 .cursor/
+token.json
+credentials/
 
 # C extensions
 *.so
+
+# Gmail Credentials (Email Integration)
+credentials.json
+token.pickle
+*.pickle
+gmail_credentials.env
 
 # Distribution / packaging
 .Python

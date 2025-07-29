@@ -10,4 +10,4 @@ Future components:
 """
 
 # TODO: Add exports when we implement these modules
-__all__: list[str] = []
+__all__: list[str] = [] # pragma: no cover

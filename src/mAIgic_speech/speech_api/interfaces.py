@@ -29,7 +29,7 @@ class AudioSource(ABC):
         Raises:
             AudioSourceError: If unable to start audio capture
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def stop(self) -> None:
@@ -37,7 +37,7 @@ class AudioSource(ABC):
 
         This method is idempotent - calling it multiple times is safe.
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def read_chunk(self) -> Optional[bytes]:
@@ -49,25 +49,25 @@ class AudioSource(ABC):
         Raises:
             AudioSourceError: If error occurs during audio capture
         """
-        pass
+        pass  # pragma: no cover
 
     @property
     @abstractmethod
     def sample_rate(self) -> int:
         """Get the audio sample rate in Hz."""
-        pass
+        pass  # pragma: no cover
 
     @property
     @abstractmethod
     def channels(self) -> int:
         """Get the number of audio channels."""
-        pass
+        pass  # pragma: no cover
 
     @property
     @abstractmethod
     def is_active(self) -> bool:
         """Check if the audio source is currently active."""
-        pass
+        pass  # pragma: no cover
 
     async def __aenter__(self) -> "AudioSource":
         """Async context manager entry."""
@@ -125,7 +125,7 @@ class RealtimeTranscriptionSession(ABC):
             SessionConnectionError: If connection to service is lost
             RealtimeTranscriptionError: For other transcription errors
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def receive_transcriptions(self) -> AsyncGenerator[TranscriptionEvent, None]:
@@ -159,7 +159,7 @@ class RealtimeTranscriptionSession(ABC):
 
         This method is idempotent - calling it multiple times is safe.
         """
-        pass
+        pass  # pragma: no cover
 
     @property
     @abstractmethod
@@ -169,7 +169,7 @@ class RealtimeTranscriptionSession(ABC):
         Returns:
             bool: True if session is closed, False otherwise
         """
-        pass
+        pass  # pragma: no cover
 
     async def __aenter__(self) -> "RealtimeTranscriptionSession":
         """Async context manager entry."""
@@ -215,7 +215,7 @@ class SpeechToTextClient(ABC):
             TranscriptionError: If transcription fails
             APIError: If API request fails
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def transcribe_stream(
@@ -272,7 +272,7 @@ class SpeechToTextClient(ABC):
         Returns:
             List[str]: Language codes (currently ['en'] for English-only)
         """
-        pass
+        pass  # pragma: no cover
 
 
 class TextToSpeechClient(ABC):
@@ -302,7 +302,7 @@ class TextToSpeechClient(ABC):
             SynthesisError: If synthesis fails
             APIError: If API request fails
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     async def synthesize_stream(
@@ -334,4 +334,4 @@ class TextToSpeechClient(ABC):
         Returns:
             List[str]: Available voice identifiers
         """
-        pass
+        pass  # pragma: no cover
